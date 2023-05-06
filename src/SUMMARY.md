@@ -2,7 +2,7 @@
 
 - [Introduction](./introduction.md)
 - [Using FRUG](./frug_guide.md)
-    - [Creating a window](./guide/creating_a_window.md)
+    - [Setup and creating a window](./guide/creating_a_window.md)
     - [Background color](./guide/background_color.md)
     - [Drawing a rectangle](./guide/colored_rectangle.md)
     - [Drawing a texture](./guide/texture_rectangle.md)
