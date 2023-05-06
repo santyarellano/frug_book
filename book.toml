@@ -1,0 +1,6 @@
+[book]
+authors = ["santyarellano"]
+language = "en"
+multilingual = false
+src = "src"
+title = "FRUG Documentation (for v0.1.0)"
