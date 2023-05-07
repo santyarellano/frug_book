@@ -65,4 +65,6 @@ And if you run it with `cargo run` it should give you a window that looks like t
 
 ![An empty window](../img/frug_window.png)
 
-Next stop... changing the color of our background!
+> You might notice that a bunch of errors are showing up in our terminal. This happens because we're not asking WGPU (the graphics API behind FRUG) to do anything. We can ignore this for the moment as we'll start doing just that when we start drawing rectangles and shapes on our window. With time I'll fix that issue but for the moment you can be at peace knowing that those errors will dissapear in time.
+
+Next stop... drawing rectangles!

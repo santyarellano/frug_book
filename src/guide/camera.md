@@ -1,1 +1,1 @@
-# Camera
+# Camera and user input
