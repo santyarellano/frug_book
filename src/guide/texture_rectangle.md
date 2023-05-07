@@ -71,4 +71,4 @@ fn main() {
 }
 ```
 
-Now let's see how we can create custom shapes, shall we?
+Now let's see how we can work with the camera and user input, shall we?
