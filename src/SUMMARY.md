@@ -8,6 +8,7 @@
     - [Drawing a texture](./guide/texture_rectangle.md)
     - [Camera and user input](./guide/camera.md)
     - [Creating a custom shape](./guide/custom_shape.md)
+    - [Setting fullscreen and window size](./guide/fullscreen.md)
 
 - [Examples](./examples.md)
     - [Pong](./examples/pong.md)
