@@ -201,3 +201,140 @@ if ball.is_game_over() {
     ball.vel.y = 0.0;
 }
 ```
+
+With that done we need to make the ball bounce with our paddle and with the vertical limits of the screen. This time we'll go through the more elaborate part of it, colliding with the paddle. I won't go into much detail with this function, just know that we'll do it in the implementation of the `CollisionRectangle` and we'll do it in some way to receive another object as parameter and bounce against it in the x axis and set a new vertical direction randomly.
+
+```rust
+/// This function will only work for the ball!
+fn check_collision(&mut self, obj: &CollisionRectangle) {
+    let mut rng = rand::thread_rng();
+
+    let tolerance_w = 0.15 * self.width; // percentage of shape
+    let tolerance_h = 0.15 * self.height; // percentage of shape
+
+    // Horizontal collision
+    if self.pos.y - tolerance_h > obj.pos.y - obj.height {
+        if self.pos.y - tolerance_h < obj.pos.y {
+            // give priority for horizontal collision
+            if self.pos.x < obj.pos.x + obj.width {
+                if self.pos.x > obj.pos.x {
+                    // Left collision is happening
+                    self.vel.x *= -1.0;
+                    self.vel.y = rng.gen_range(-0.01..0.01);
+                    return;
+                }
+            }
+
+            if self.pos.x + self.width > obj.pos.x {
+                if self.pos.x + self.width < obj.pos.x + obj.width {
+                    // Right collision is happening
+                    self.vel.x *= -1.0;
+                    self.vel.y = rng.gen_range(-0.01..0.01);
+                    return;
+                }
+            }
+        }
+    }
+
+    // Vertical collision
+    if self.pos.x + tolerance_w < obj.pos.x - obj.width {
+        if self.pos.x + tolerance_w > obj.pos.x {
+            // give priority for vertical collision
+            if self.pos.y > obj.pos.y - obj.height {
+                if self.pos.y < obj.pos.y {
+                    // Up collision is happening
+                    self.vel.y *= -1.0;
+                    return;
+                }
+            }
+
+            if self.pos.y - self.height < obj.pos.y {
+                if self.pos.y - self.height > obj.pos.y - obj.height {
+                    // Down collision is happening
+                    self.vel.y *= -1.0;
+                    return;
+                }
+            }
+        }
+    }
+
+    // No collision was detected
+}
+```
+
+And for the ball to bounce with the floor and ceiling we'll do something similar to what we did to reset the ball.
+
+```rust
+fn check_collision_screen(&mut self) {
+    if self.pos.y >= 1.0 {
+        if self.vel.y > 0.0 {
+            self.vel.y *= -1.0;
+        }
+    } else if self.pos.y - self.height < -1.0 {
+        if self.vel.y < 0.0 {
+            self.vel.y *= -1.0;
+        }
+    }
+}
+```
+
+Now we need to add those calls inside our update function.
+
+```rust
+// bounce ball in case of collision
+ball.check_collision(&player);
+ball.check_collision_screen();
+```
+
+And with that done we should have a ball that neatly bounces with our player's paddle!
+
+> You might notice that there's a very rare situation where the ball gets trapped between the floor/ceiling and the paddle. For the sake of simplicity of this example I'm not fixing that issue but feel free to try your own solution!
+
+Now all we have left to do is to create our opponent. Fortunately, it is really easy now that we've done the hard parts. We can start by adding a new instance of the `CollisionRectangle` for our opponent.
+
+```rust
+let mut opponent = CollisionRectangle::new(0.8, 0.2, 0.1, 0.5);
+```
+
+Add it's checks for collisions with our ball.
+
+```rust
+ball.check_collision(&opponent);
+```
+
+Then the call to `update_pos`.
+
+```rust
+opponent.update_pos();
+```
+
+And our drawing of the opponent's rectangle.
+
+```rust
+instance.add_colored_rect(
+    opponent.pos.x,
+    opponent.pos.y,
+    opponent.width,
+    opponent.height,
+    [1.0, 1.0, 1.0],
+);
+```
+
+Finally, we need some sort of AI to move our paddle. In this case we'll keep things simple and just try to align the center of the opponent with the center of the ball.
+
+```rust
+// move opponent
+let opponent_y = opponent.pos.y - (opponent.height / 2.0);
+let ball_y = ball.pos.y - (ball.height / 2.0);
+if opponent_y > ball_y {
+    opponent.vel.y = -paddle_speed;
+} else if opponent_y < ball_y {
+    opponent.vel.y = paddle_speed;
+}
+```
+
+And... done! If you've gone through these steps you should be able to play pong!
+
+![Our pong game.](../img/pong.png)
+
+Now that we've gone through a simple game, why don't we try something that involves sprites and a bit more color?
