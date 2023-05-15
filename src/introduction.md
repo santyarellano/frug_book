@@ -14,10 +14,10 @@ Currently FRUG allows the following features:
 - Scaling textures
 - Handle Mouse input
 - Handle Keyboard input
+- Alpha blending for textures
 
 And these are the features currently under development:
 - Rotating textures
-- Alpha blending for textures
 - Choosing a specific backend (Direct X, Metal, Vulkan, etc.)
 - Writing and using custom shaders
 - Handle window state events
