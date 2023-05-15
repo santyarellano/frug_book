@@ -1,0 +1,766 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Simple platformer - FRUG Documentation (for v0.1.0)</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../frug_guide.html"><strong aria-hidden="true">2.</strong> Using FRUG</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../guide/creating_a_window.html"><strong aria-hidden="true">2.1.</strong> Setup and creating a window</a></li><li class="chapter-item expanded "><a href="../guide/colored_rectangle.html"><strong aria-hidden="true">2.2.</strong> Drawing a rectangle</a></li><li class="chapter-item expanded "><a href="../guide/background_color.html"><strong aria-hidden="true">2.3.</strong> Background color</a></li><li class="chapter-item expanded "><a href="../guide/texture_rectangle.html"><strong aria-hidden="true">2.4.</strong> Drawing a texture</a></li><li class="chapter-item expanded "><a href="../guide/camera.html"><strong aria-hidden="true">2.5.</strong> Camera and user input</a></li><li class="chapter-item expanded "><a href="../guide/custom_shape.html"><strong aria-hidden="true">2.6.</strong> Creating a custom shape</a></li><li class="chapter-item expanded "><a href="../guide/fullscreen.html"><strong aria-hidden="true">2.7.</strong> Setting fullscreen and window size</a></li></ol></li><li class="chapter-item expanded "><a href="../examples.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../examples/pong.html"><strong aria-hidden="true">3.1.</strong> Pong</a></li><li class="chapter-item expanded "><a href="../examples/platformer.html" class="active"><strong aria-hidden="true">3.2.</strong> Simple platformer</a></li></ol></li><li class="chapter-item expanded "><a href="../contribute_to_frug.html"><strong aria-hidden="true">4.</strong> Contributing to the project</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">FRUG Documentation (for v0.1.0)</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="simple-platformer"><a class="header" href="#simple-platformer">Simple platformer</a></h1>
+<p>While there are some games out there that use only simple shapes, most games use images and textures to represent a more elaborate character than a triangle. So in this example we'll go through how FRUG can help us make games that have images and animations. What we'll do will look a bit like the following:</p>
+<p><img src="../img/platformer.gif" alt="Our simple platformer" /></p>
+<p>As you can see, there are no enemies or complex mechanics, but the basics are all there: we have animations of our frog, a background, and collisions. Some things might not be as polished as one might like but the idea is there and I thought it would be better to keep things as simple as possible.</p>
+<p>We'll start with our basic FRUG setup we've used in previous examples in our <code>main.rs</code>:</p>
+<pre><pre class="playground"><code class="language-rust">use frug;
+
+fn main() {
+    let (frug_instance, event_loop) = frug::new(&quot;My Simple Platformer&quot;);
+
+    let update_function = move |instance: &amp;mut frug::FrugInstance, _input: &amp;frug::InputHelper| {
+       
+    };
+
+    frug_instance.run(event_loop, update_function);
+}</code></pre></pre>
+<p>Let's work our way up from the simple things to the complex ones, shall we? In such a case we'll start with drawing the background. For this we'll first need to load our texture, just as we did in previous examples:</p>
+<blockquote>
+<p>You can find all the assets for this project in the example folder of the FRUG repo in <a href="https://github.com/santyarellano/frug/tree/master/examples">this link</a>.</p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// background
+let img_bytes = include_bytes!(&quot;platformer_imgs/Purple.png&quot;);
+let background_tex_idx = frug_instance.load_texture(img_bytes);
+<span class="boring">}</span></code></pre></pre>
+<p>I'm using the purple tiles you saw in the .gif above. However, the image is only 1/6th of what you saw. To achieve the background you saw we need to repeat the image a couple of times, for this we'll have the following function.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// This function helps us draw the same texture for our background on repeat.
+fn draw_repeat_background(instance: &amp;mut frug::FrugInstance, tex_idx: usize, rows: u16, cols: u16) {
+    let tile_w: f32 = 2.0 / cols as f32;
+    let tile_h: f32 = 2.0 / rows as f32;
+    for i in 0..rows {
+        for j in 0..cols {
+            instance.add_tex_rect(
+                tile_w * j as f32 - 1.0,
+                tile_h * -(i as f32) + 1.0,
+                tile_w,
+                tile_h,
+                tex_idx,
+                false,
+                false,
+            );
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>As you can see, our function receives a <code>FrugInstance</code> which we'll use to draw the texture rectangles for our mosaic background, we'll also receive the texture index of the image to draw, and how many columns and rows we want tod draw. With that all we need to do is calculate the length and height of each tile and draw them in their respective positions.</p>
+<blockquote>
+<p>Remember that FRUG uses a -1 to 1 coordinate system, which means the size of each size of the screen is 2. Yet these are world coordinates, and that means that if you use a non-squared screen you'll need to do some math to get proper proportions for your assets.</p>
+</blockquote>
+<p>In this example we'll set our window to a squared size to avoid doing weird math to avoid weird stretched images.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>frug_instance.set_window_size(800.0, 800.0);
+<span class="boring">}</span></code></pre></pre>
+<p>Now all we have to do is call our function in our render section of our main:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// REMEMBER: THIS GOES AFTER THE instance.clear()
+
+// background
+draw_repeat_background(instance, background_tex_idx, 6, 6);
+<span class="boring">}</span></code></pre></pre>
+<p>Now we should have our background being rendered nicely!</p>
+<p>Next up, let's try drawing our floor tiles. For this we'll start by defining where this tiles will be in our &quot;world&quot;. In future iterations we might need to change where things are to test different things, and to achieve this we'll create a matrix to &quot;define&quot; where things spawn in our world.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let world_matrix = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+];
+<span class="boring">}</span></code></pre></pre>
+<p>As you can see, we have a 10x10 matrix of 0s and 1s. In here 0s mean nothing, but the 1s will represent these floor tiles.</p>
+<p>Now we'll need to define our struct to represent our game objects.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Clone)]
+struct Entity {
+    _name: Option&lt;String&gt;,
+    tex_idx: Option&lt;usize&gt;,
+    sprite: Option&lt;Sprite&gt;,
+    pos: Option&lt;Vector2&lt;f32&gt;&gt;,
+    vel: Option&lt;Vector2&lt;f32&gt;&gt;,
+    size: Option&lt;Vector2&lt;f32&gt;&gt;,
+    collisions: bool,
+    gravity: bool,
+    controlling: bool,
+    flip_img_x: bool,
+    flip_img_y: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<blockquote>
+<p>You'll notice that there are a lot of attributes in that struct that we don't really need for the floor tiles. However, you'll see later on that they will come in handy, yet some of this can be a bit obvious what they do. </p>
+</blockquote>
+<p>If you're using some code editor that checks how things are going you'll find out that there is a data type that doesn't exist, something called <code>Sprite</code>. We'll also need to define this struct, which will be used with our player to handle our animations.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Clone)]
+struct Sprite {
+    tex_idxs: Vec&lt;usize&gt;,
+    anim_speed: u8,
+    frame_timer: u8,
+    current_idx: usize,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Now, we'll need to to create some methods for our <code>Entity</code>, the first of these is the default implementation. This is just to ease our future a bit when we create new instances of our entity object.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl Default for Entity {
+    fn default() -&gt; Self {
+        Entity {
+            _name: None,
+            tex_idx: None,
+            sprite: None,
+            pos: None,
+            vel: None,
+            size: None,
+            collisions: false,
+            gravity: false,
+            controlling: false,
+            flip_img_x: false,
+            flip_img_y: false,
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>And we'll also need the render method of our entities.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl Entity {
+    fn render(&amp;self, frug_instance: &amp;mut FrugInstance) {
+        match self.tex_idx {
+            Some(idx) =&gt; frug_instance.add_tex_rect(
+                self.pos.unwrap().x,
+                self.pos.unwrap().y,
+                self.size.unwrap().x,
+                self.size.unwrap().y,
+                idx,
+                self.flip_img_x,
+                self.flip_img_y,
+            ),
+            None =&gt; {}
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>With this, we won't have to worry about how we draw every type of game object. We just have to create entities and give them the proper texture index.</p>
+<p>Yet for this to work properly we need to create a <code>Vec</code> of entities to hold all our entities and make it easy to call all methods for all our entities (this goes before our update function in our main).</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut entities: Vec&lt;Entity&gt; = Vec::new();
+<span class="boring">}</span></code></pre></pre>
+<p>Before we can create those instances we should load the texture for our floor tiles (just after we loaded the background texture).</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// floor tiles
+let img_bytes = include_bytes!(&quot;platformer_imgs/land.png&quot;);
+let land_tex_idx = frug_instance.load_texture(img_bytes);
+<span class="boring">}</span></code></pre></pre>
+<p>And now we actually need to create those entities. We'll go through our <code>world_matrix</code> and create a floor tile when we encounter a 1.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// load entities according to world matrix
+for i in 0..world_matrix.len() {
+    for j in 0..world_matrix[0].len() {
+        match world_matrix[i][j] {
+            1 =&gt; {
+                // floor tiles
+                let land_size = 2.0 / world_matrix.len() as f32;
+                let land_pos_x = j as f32 * land_size - 1.0;
+                let land_pos_y = i as f32 * -land_size + 1.0;
+                let new_land = Entity {
+                    tex_idx: Some(land_tex_idx),
+                    pos: Some(Vector2 {
+                        x: land_pos_x,
+                        y: land_pos_y,
+                    }),
+                    size: Some(Vector2 {
+                        x: land_size,
+                        y: land_size,
+                    }),
+                    collisions: true,
+                    ..Default::default()
+                };
+
+                entities.push(new_land);
+            }
+            _ =&gt; {}
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>As you can see that bit of code is somewhat longer than other blocks of code, but I hope it is easy enought to understand. All we do is if we find a 1 in the world matrix we calculate where our floor tiles should be and create an entity instance with such values and the proper texture index.</p>
+<p>No we just have to call our <code>render</code> method in our rendering section of our main function (after we draw our background).</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// entities
+for entity in &amp;entities {
+    entity.render(instance);
+}
+<span class="boring">}</span></code></pre></pre>
+<p>If you run this, you should be able to see your tiles neatly rendering in that world! And the better part of this is that you can modify the world matrix and you'll have to change nothing more for the changes to appear in your game!</p>
+<p>Now, the last part, and the longest one is our player. This will involve some changes but hopefully it will be easy enough with what we've done so far.</p>
+<p>We can start with loading the textures for our player, in this case, a frog (but feel free to use whatever you want). For this we'll store them in a <code>vec!</code> instead. This is because we'll have multiple images for our animation of our frog.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// frog
+let frog_tex_idxs = vec![
+    frug_instance.load_texture(include_bytes!(&quot;platformer_imgs/frog/0.png&quot;)),
+    frug_instance.load_texture(include_bytes!(&quot;platformer_imgs/frog/1.png&quot;)),
+    frug_instance.load_texture(include_bytes!(&quot;platformer_imgs/frog/2.png&quot;)),
+    frug_instance.load_texture(include_bytes!(&quot;platformer_imgs/frog/3.png&quot;)),
+    frug_instance.load_texture(include_bytes!(&quot;platformer_imgs/frog/Fall.png&quot;)),
+    frug_instance.load_texture(include_bytes!(&quot;platformer_imgs/frog/Jump.png&quot;)),
+];
+<span class="boring">}</span></code></pre></pre>
+<blockquote>
+<p>As you can see we have 4 images (which will be for our walking animation), 1 for our jump, and 1 for when the player is falling.</p>
+</blockquote>
+<p>For the sake of keeping this tutorial short I'll go a bit quicker with the next steps. For these next sections I'll just make a summary of what is happening, but I'll try to make the code as understandable as possible.</p>
+<p>Before starting with that we'll create some constants (this will go at the beggining of our file just after our imports).</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// ======= CONSTANTS &amp; ENUMS ======
+const GRAVITY: f32 = 0.001;
+const PLAYER_SPEED: f32 = 0.01;
+const PLAYER_JUMP: f32 = 0.02;
+
+enum Collision {
+    Top,
+    Bottom,
+    Left,
+    Right,
+    None,
+}
+// ======= CONSTANTS &amp; ENUMS ======
+<span class="boring">}</span></code></pre></pre>
+<p>We'll need to add some methods to our <code>Entity</code>:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl Entity {
+    fn process_input(&amp;mut self, input: &amp;frug::InputHelper) {
+        if self.controlling {
+            match self.vel.as_mut() {
+                Some(vel) =&gt; {
+                    vel.x = 0.0;
+                    if input.key_held(frug::VirtualKeyCode::Left) {
+                        vel.x -= PLAYER_SPEED;
+                    }
+
+                    if input.key_held(frug::VirtualKeyCode::Right) {
+                        vel.x += PLAYER_SPEED;
+                    }
+
+                    if input.key_pressed(frug::VirtualKeyCode::Space) {
+                        if vel.y == 0.0 {
+                            vel.y += PLAYER_JUMP;
+                        }
+                    }
+                }
+                None =&gt; {}
+            }
+        }
+    }
+
+    fn update(&amp;mut self, all_entities: &amp;[Entity], current_idx: usize) {
+        // gravity
+        if self.gravity {
+            self.vel.as_mut().unwrap().y -= GRAVITY;
+        }
+
+        // collisions
+        if self.collisions {
+            for i in 0..all_entities.len() {
+                if i != current_idx {
+                    // only collide if other object has collisions as well
+                    if all_entities[i].collisions {
+                        match self.check_collision(&amp;all_entities[i]) {
+                            Collision::Top =&gt; match self.vel.as_mut() {
+                                Some(v) =&gt; {
+                                    if v.y &gt; 0.0 {
+                                        v.y = 0.0;
+                                    }
+                                }
+                                None =&gt; {}
+                            },
+                            Collision::Bottom =&gt; match self.vel.as_mut() {
+                                Some(v) =&gt; {
+                                    //println!(&quot;{}&quot;, v.y);
+                                    if v.y &lt; 0.0 {
+                                        v.y = 0.0;
+                                    }
+                                }
+                                None =&gt; {}
+                            },
+                            Collision::Left =&gt; match self.vel.as_mut() {
+                                Some(v) =&gt; {
+                                    if v.x &lt; 0.0 {
+                                        v.x = 0.0;
+                                    }
+                                }
+                                None =&gt; {}
+                            },
+                            Collision::Right =&gt; match self.vel.as_mut() {
+                                Some(v) =&gt; {
+                                    if v.x &gt; 0.0 {
+                                        v.x = 0.0;
+                                    }
+                                }
+                                None =&gt; {}
+                            },
+                            Collision::None =&gt; {}
+                        }
+                    }
+                }
+            }
+        }
+
+        // movement
+        match self.vel {
+            Some(v) =&gt; {
+                let pos = self.pos.unwrap();
+                self.pos = Some(pos + v);
+            }
+            None =&gt; {}
+        }
+
+        // animate
+        self.animate();
+    }
+
+    fn render(&amp;self, frug_instance: &amp;mut FrugInstance) {
+        match self.tex_idx {
+            Some(idx) =&gt; frug_instance.add_tex_rect(
+                self.pos.unwrap().x,
+                self.pos.unwrap().y,
+                self.size.unwrap().x,
+                self.size.unwrap().y,
+                idx,
+                self.flip_img_x,
+                self.flip_img_y,
+            ),
+            None =&gt; {}
+        }
+    }
+
+    // choose the correct texture index accordingly
+    fn animate(&amp;mut self) {
+        // animate only if object has sprites
+        match self.sprite.as_mut() {
+            Some(sprite) =&gt; {
+                match &amp;self._name {
+                    // Define how the animations work for each name
+                    Some(name) =&gt; match name.as_str() {
+                        &quot;Player&quot; =&gt; {
+                            match &amp;self.vel {
+                                Some(vel) =&gt; {
+                                    // flip img if necessary
+                                    if vel.x &gt; 0.0 {
+                                        self.flip_img_x = false;
+                                    } else if vel.x &lt; 0.0 {
+                                        self.flip_img_x = true;
+                                    }
+
+                                    // jump/fall (has priority)
+                                    if vel.y &gt; 0.0 {
+                                        sprite.current_idx = 5;
+                                    } else if vel.y &lt; 0.0 {
+                                        sprite.current_idx = 4;
+                                    }
+                                    // walk
+                                    else if vel.x != 0.0 {
+                                        // update timer
+                                        if sprite.frame_timer == 0 {
+                                            // timer ended
+                                            sprite.frame_timer = sprite.anim_speed;
+                                            sprite.current_idx += 1;
+                                            if sprite.current_idx &gt; 3 {
+                                                // animation must go back to beggining
+                                                sprite.current_idx = 0;
+                                            }
+                                        }
+                                        sprite.frame_timer -= 1;
+                                    }
+                                    // idle
+                                    else {
+                                        sprite.frame_timer = 0;
+                                        sprite.current_idx = 0;
+                                    }
+                                }
+                                None =&gt; {}
+                            }
+
+                            // update texture index
+                            self.tex_idx = Some(sprite.tex_idxs[sprite.current_idx]);
+                        }
+                        _ =&gt; {}
+                    },
+                    None =&gt; {}
+                }
+            }
+            None =&gt; {}
+        }
+    }
+
+    // checks collision with another entity
+    fn check_collision(&amp;self, other: &amp;Entity) -&gt; Collision {
+        let collision_room = self.size.unwrap() / (2.0 * 3.0) / 2.0;
+
+        // self collision borders
+        let s_horizontal = (
+            self.get_center().x - collision_room.x, // left
+            self.get_center().x + collision_room.x, // right
+        );
+        let s_vertical = (
+            self.get_center().y + collision_room.y, // top
+            self.get_center().y - collision_room.y, // bottom
+        );
+
+        // other collision borders
+        let o_horizontal = (
+            other.pos.unwrap().x,                         // left
+            other.pos.unwrap().x + other.size.unwrap().x, // right
+        );
+        let o_vertical = (
+            other.pos.unwrap().y,                         // top
+            other.pos.unwrap().y - other.size.unwrap().y, // bottom
+        );
+
+        // check for vertical collisions
+        if (s_horizontal.0 &gt; o_horizontal.0 &amp;&amp; s_horizontal.0 &lt; o_horizontal.1)
+            || (s_horizontal.1 &gt; o_horizontal.0 &amp;&amp; s_horizontal.1 &lt; o_horizontal.1)
+        {
+            // self is within the horizontal range of other
+
+            // check for top collision
+            if self.pos.unwrap().y &gt;= o_vertical.1 &amp;&amp; self.pos.unwrap().y &lt;= o_vertical.0 {
+                return Collision::Top;
+            }
+            // check for bottom collision
+            else if self.pos.unwrap().y - self.size.unwrap().y &lt;= o_vertical.0
+                &amp;&amp; self.pos.unwrap().y - self.size.unwrap().y &gt;= o_vertical.1
+            {
+                return Collision::Bottom;
+            }
+        }
+
+        // check for horizontal collisions
+        if (s_vertical.0 &lt; o_vertical.0 &amp;&amp; s_vertical.0 &gt; o_vertical.1)
+            || (s_vertical.1 &lt; o_vertical.0 &amp;&amp; s_vertical.1 &gt; o_vertical.1)
+        {
+            // self is within the vertical range of other
+
+            // check for left collision
+            if self.pos.unwrap().x &lt; o_horizontal.1 &amp;&amp; self.pos.unwrap().x &gt; o_horizontal.0 {
+                return Collision::Left;
+            }
+
+            // check for right collision
+            if self.pos.unwrap().x + self.size.unwrap().x &gt; o_horizontal.0
+                &amp;&amp; self.pos.unwrap().x + self.size.unwrap().x &lt; o_horizontal.1
+            {
+                return Collision::Right;
+            }
+        }
+
+        return Collision::None;
+    }
+
+    fn get_center(&amp;self) -&gt; Vector2&lt;f32&gt; {
+        return Vector2 {
+            x: self.pos.unwrap().x + self.size.unwrap().x / 2.0,
+            y: self.pos.unwrap().y - self.size.unwrap().y / 2.0,
+        };
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<ul>
+<li>
+<p>the <code>process_input</code> receives the frug::InputHelper and acts if the entity has enabled the <code>controlling</code> field and add to the player's velocity (x) the player speed constant we just defined when the left/right arrows are being held, and when the space bar is being pressed we add to the player's velocity (y) the jump constant we created (only if the such velocity was 0, which will help us avoid an infinite jump bug).</p>
+</li>
+<li>
+<p>the <code>update</code> handles adding gravity to the velocity if such attribute is enabled for the entity, then handle collisions (this part is way too long to explain but it is a generic collision detection algorithm which allows to detect the direction where objects are colliding. This part also receives the <code>all_entities</code> parameter to compare against all entities). If collisions are happening, we modify the velocity of the entity to simulate real collisions. This part could be improved but for the sake of simplicity let's leave it at the least needed for it to work. We then update the entity's position based on the velocity. Finally we call the animate function.</p>
+</li>
+<li>
+<p>the <code>animate</code> function handles the selection of the correct texture index based on the object's name (this helps to define if it's the player or another type of entity), and the entity's velocity. Again, this could be better but this was a simple solution that works.</p>
+</li>
+<li>
+<p>the <code>check_collision</code> checks whether the entity is colliding against another entity and if so, return the direction it is colliding from.</p>
+</li>
+<li>
+<p>the <code>get_center</code> is a helper function that returns a vector2 indicating the center position of an entity.</p>
+</li>
+</ul>
+<p>After this modifications to our entity struct, we actually need to spawn our player. We'll use the number 2 to indicate that in the world matrix.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let world_matrix = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+];
+<span class="boring">}</span></code></pre></pre>
+<p>And we'll need to add that case in our entities loading.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>2 =&gt; {
+    // player
+    let size = 2.0 / world_matrix.len() as f32;
+    let pos_x = j as f32 * size - 1.0;
+    let pos_y = i as f32 * -size + 1.0;
+    let new_player = Entity {
+        _name: Some(&quot;Player&quot;.to_string()),
+        tex_idx: None,
+        sprite: Some(Sprite {
+            tex_idxs: frog_tex_idxs.clone(),
+            anim_speed: 8,
+            frame_timer: 8,
+            current_idx: 0,
+        }),
+        pos: Some(Vector2 { x: pos_x, y: pos_y }),
+        size: Some(Vector2 { x: size, y: size }),
+        vel: Some(Vector2 { x: 0.0, y: 0.0 }),
+        collisions: true,
+        gravity: true,
+        controlling: true,
+        ..Default::default()
+    };
+
+    entities.push(new_player);
+}
+<span class="boring">}</span></code></pre></pre>
+<p>As you can see, in this instance we're using the other attributes defined in our <code>Entity</code> struct. Thank you for your patience!</p>
+<p>And lastly, we need to add some calls in our update function to actually process the input and call the update method of our entities.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// process input
+for entity in entities.iter_mut() {
+    entity.process_input(input)
+}
+
+// update
+for i in 0..entities.len() {
+    let mut current_entity = entities[i].clone();
+
+    current_entity.update(&amp;entities, i);
+    entities[i] = current_entity;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>And that's it! You should have your game ready to run!</p>
+<p>In case something didn't work properly, feel free to review the full code in the example (<a href="https://github.com/santyarellano/frug/blob/master/examples/platformer.rs">here's the link</a>).</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../examples/pong.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../contribute_to_frug.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../examples/pong.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../contribute_to_frug.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

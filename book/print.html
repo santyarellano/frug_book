@@ -1,0 +1,1481 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>FRUG Documentation (for v0.1.0)</title>
+        <meta name="robots" content="noindex" />
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="frug_guide.html"><strong aria-hidden="true">2.</strong> Using FRUG</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="guide/creating_a_window.html"><strong aria-hidden="true">2.1.</strong> Setup and creating a window</a></li><li class="chapter-item expanded "><a href="guide/colored_rectangle.html"><strong aria-hidden="true">2.2.</strong> Drawing a rectangle</a></li><li class="chapter-item expanded "><a href="guide/background_color.html"><strong aria-hidden="true">2.3.</strong> Background color</a></li><li class="chapter-item expanded "><a href="guide/texture_rectangle.html"><strong aria-hidden="true">2.4.</strong> Drawing a texture</a></li><li class="chapter-item expanded "><a href="guide/camera.html"><strong aria-hidden="true">2.5.</strong> Camera and user input</a></li><li class="chapter-item expanded "><a href="guide/custom_shape.html"><strong aria-hidden="true">2.6.</strong> Creating a custom shape</a></li><li class="chapter-item expanded "><a href="guide/fullscreen.html"><strong aria-hidden="true">2.7.</strong> Setting fullscreen and window size</a></li></ol></li><li class="chapter-item expanded "><a href="examples.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="examples/pong.html"><strong aria-hidden="true">3.1.</strong> Pong</a></li><li class="chapter-item expanded "><a href="examples/platformer.html"><strong aria-hidden="true">3.2.</strong> Simple platformer</a></li></ol></li><li class="chapter-item expanded "><a href="contribute_to_frug.html"><strong aria-hidden="true">4.</strong> Contributing to the project</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">FRUG Documentation (for v0.1.0)</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction <img src="img/frug_logo_200.png" alt="The FRUG Logo" /></a></h1>
+<p>Welcome to the FRUG documentation! Here you will find guides and examples to help you get started using FRUG.</p>
+<p>FRUG is intended to provide a similar abstraction layer over graphics programming as to how SDL and SFML do for C/C++, meaning that it should provide developers enough control and flexibility to implement their own architectures &amp; design patterns, yet simplifying the process of working with graphics so developers won’t have to worry about implementing all the repetitive tasks related to getting things to the screen.</p>
+<p>The purpose of the project is to provide a simple graphics library which allows learning directly on rust (which is why documentation and tutorials for FRUG are vital) and developing simple games with as few resources/libraries as possible. </p>
+<blockquote>
+<p>Please note that the project is still in <strong>very</strong> early stages of development, I would only advice to use it if you want to learn how to make simple games with rust. This may change in the future, yet for the moment the implemented features are minimal and things may change drastically.</p>
+</blockquote>
+<p>Currently FRUG allows the following features:</p>
+<ul>
+<li>Window creation</li>
+<li>Loading &amp; rendering textures</li>
+<li>Scaling textures</li>
+<li>Handle Mouse input</li>
+<li>Handle Keyboard input</li>
+</ul>
+<p>And these are the features currently under development:</p>
+<ul>
+<li>Rotating textures</li>
+<li>Alpha blending for textures</li>
+<li>Choosing a specific backend (Direct X, Metal, Vulkan, etc.)</li>
+<li>Writing and using custom shaders</li>
+<li>Handle window state events</li>
+<li>Drawing text easily</li>
+<li>Playing audio</li>
+<li>Configure audio</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="using-frug"><a class="header" href="#using-frug">Using FRUG</a></h1>
+<p>As mentioned in the introduction, FRUG aims to be simple enough to learn, yet still allow as much control as possible to developers, therefore avoiding to make of FRUG an engine. Given this, FRUG identifies itself as a library which simplifies basic tasks related to getting things on the screen.</p>
+<p>In this section you will find some guides to show you how FRUG works (don't expect these to be full tutorials, those will come later).</p>
+<p>We'll start by taking a look at how one creates a window, then we'll set the background color of our window, followed by drawing a rectangle with a color and then with an image/sprite in it, after that we'll take a look at how we can create a custom shape by defining vertices and indices, and finally we'll take a look at how to work with our &quot;camera&quot;.</p>
+<p>In later chapters you can find examples of simple games to review all these concepts and see how they can be applied to your games.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="setup-and-creating-a-window"><a class="header" href="#setup-and-creating-a-window">Setup and creating a window</a></h1>
+<p>We can't do much related to getting things on the screen if we don't have somewhere to draw our stuff in the first place, so we'll need to create a window for that. </p>
+<p>As with most rust projects, we'll need to start creating our new project with the following command:</p>
+<pre><code>cargo init my_frug_project
+</code></pre>
+<p>FRUG attempts to simplify the process of starting out, and that includes importing stuff. All we'll need for now is adding FRUG into our <strong>Cargo.toml</strong>:</p>
+<pre><code class="language-toml"># ...
+
+[dependencies]
+frug = &quot;*&quot; 
+# We'll use the star to use the latest version. 
+# If you want, you can substitute the star with the version number you want to use.
+</code></pre>
+<p>Now that frug is in our project we can start using it in our main. For this, add the import of frug into the top of your <code>main.rs</code>:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use frug;
+<span class="boring">}</span></code></pre></pre>
+<p>Now, inside our main function we'll need to add some things in order for the magic to happen, the first of these is the <code>frug_instance</code> which is the object that holds most of our functions and setup of our window, camera, textures, etc. The other one is the event_loop (we will not go into much detail for the moment about this, just keep in mind that it is where things will happen). Fortunately all we need to get these two things is call a function called <code>new</code> which returns both things. All we need to pass as a parameter is the name we want for our window. In the end it looks like this inside our <code>main</code> function.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let (frug_instance, event_loop) = frug::new(&quot;My Window&quot;);
+<span class="boring">}</span></code></pre></pre>
+<p>Then, we'll need our update function, which we won't use for the moment but it is important because it is here where we will write the code we want to execute with each frame.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let update_function = move |_instance: &amp;mut frug::FrugInstance, _input: &amp;frug::InputHelper| {
+    // your frame per frame code will go here!
+};
+<span class="boring">}</span></code></pre></pre>
+<p>Lastly, all we need to do is start running our game. For this, the <code>frug_instance</code> has a method called <code>run</code> which receives the event loop we initialized earlier, and the code we want to execute each frame (the update function).</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>frug_instance.run(event_loop, update_function);
+<span class="boring">}</span></code></pre></pre>
+<p>In the end, your whole <code>main.rs</code> file should look like this:</p>
+<pre><pre class="playground"><code class="language-rust">use frug;
+
+fn main() {
+    let (frug_instance, event_loop) = frug::new(&quot;My Window&quot;);
+
+    let update_function = move |_instance: &amp;mut frug::FrugInstance, _input: &amp;frug::InputHelper| {
+        // your frame per frame code will go here!
+    };
+
+    frug_instance.run(event_loop, update_function);
+}</code></pre></pre>
+<p>And if you run it with <code>cargo run</code> it should give you a window that looks like this:</p>
+<p><img src="guide/../img/frug_window.png" alt="An empty window" /></p>
+<blockquote>
+<p>You might notice that a bunch of errors are showing up in our terminal. This happens because we're not asking WGPU (the graphics API behind FRUG) to do anything. We can ignore this for the moment as we'll start doing just that when we start drawing rectangles and shapes on our window. With time I'll fix that issue but for the moment you can be at peace knowing that those errors will dissapear in time.</p>
+</blockquote>
+<p>Next stop... drawing rectangles!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="drawing-a-rectangle"><a class="header" href="#drawing-a-rectangle">Drawing a rectangle</a></h1>
+<p>Now that we have somewhere to draw things, why don't we start drawing something in there?</p>
+<p>In computer graphics almost everything is drawn with triangles. However, in 2D games most of the times we use rectangles, so why don't we start by drawing one on our screen? Since it is so common, our FRUG instance includes a function that draws a rectangle given a position, the width, the height, and the color we want for our rectangle.</p>
+<p>Now, even though it is easy to draw the rectangle, it is also important to clear things up. FRUG works by storing a list of all the shapes it should draw each frame, so it is important to avoid drawing the same shapes we used on previous frames (or maybe for some reason you want to do that), to do that we should add in our update function a call to our instance's <code>clear</code> function, that way we forget about the previous frames' shapes and we can start anew.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>instance.clear();
+<span class="boring">}</span></code></pre></pre>
+<p>Now we can start drawing a rectangle with the following line (after the one we just added):</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>instance.clear();
+instance.add_colored_rect(0.0, 0.0, 0.75, 0.5, [0.0, 0.5, 0.5]); // &lt;- NEW!
+<span class="boring">}</span></code></pre></pre>
+<p>Those first 4 numbers we're passing as parameters might look logical to you, but the other three, in case you missed it, defines the red, green, and blue parts of the color we'll be using in our rectangle.</p>
+<p>If you run this you will notice that nothing shows up on the screen and that the weird list of wgpu errors are still happening. This is because FRUG is storing all that is needed to draw that rectangle in a staging buffer, meaning that we're actually never saying to FRUG to draw that rectangle. For that we need to add the following line to ask our instance to send the data in that staging buffer to the actual buffer which will be drawn onto the screen:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>instance.clear();
+instance.add_colored_rect(0.0, 0.0, 0.75, 0.5, [0.0, 0.5, 0.5]);
+instance.update_buffers(); // &lt;- NEW!
+<span class="boring">}</span></code></pre></pre>
+<p>Now, if we run the project we should be able to see our rectangle nicely showing up in our screen.</p>
+<p><img src="guide/../img/guide_rectangle.png" alt="The window and our rectangle" /></p>
+<p>In the end, your <code>main.rs</code> file should look like this:</p>
+<pre><pre class="playground"><code class="language-rust">use frug;
+
+fn main() {
+    let (frug_instance, event_loop) = frug::new(&quot;My Window&quot;);
+
+    let update_function = move |instance: &amp;mut frug::FrugInstance, _input: &amp;frug::InputHelper| {
+        instance.clear();
+        instance.add_colored_rect(0.0, 0.0, 0.75, 0.5, [0.0, 0.5, 0.5]);
+        instance.update_buffers();
+    };
+
+    frug_instance.run(event_loop, update_function);
+}</code></pre></pre>
+<p>Next up... changing the background color!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="background-color"><a class="header" href="#background-color">Background color</a></h1>
+<p>Now, maybe we don't want just a black background for our games, maybe we want some blue for a sky, or green if we're in some type of forest. We can do this easily in our game, all we need to do is create the color we want and tell our FRUG instance that we should use that color instead.</p>
+<p>We can start by creating a variable to hold that color we want before definind our update function (or in other words, right at the beggining of our main function).</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let (frug_instance, event_loop) = frug::new(&quot;My Window&quot;);
+
+let background_color = frug::create_color(0.1, 0.2, 0.3, 1.0); // &lt;- NEW!
+<span class="boring">}</span></code></pre></pre>
+<p>Now we just have to tell our <code>frug_instance</code> to use such color as the background color. Don't forget to make the <code>frug_instance</code> mutable so we can actually do that!</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let (mut frug_instance, event_loop) = frug::new(&quot;My Window&quot;); // make the instance mutable!
+
+let background_color = frug::create_color(0.1, 0.2, 0.3, 1.0);
+frug_instance.set_background_color(background_color); // &lt;- NEW!
+<span class="boring">}</span></code></pre></pre>
+<p>If you run this you should see our background in a new and nice blue!</p>
+<p><img src="guide/../img/guide_bkg_color.png" alt="The window with a new background color" /></p>
+<p>The final code for this section should look something like this:</p>
+<pre><pre class="playground"><code class="language-rust">use frug;
+
+fn main() {
+    let (mut frug_instance, event_loop) = frug::new(&quot;My Window&quot;);
+
+    let background_color = frug::create_color(0.1, 0.2, 0.3, 1.0);
+    frug_instance.set_background_color(background_color);
+
+    let update_function = move |instance: &amp;mut frug::FrugInstance, _input: &amp;frug::InputHelper| {
+        instance.clear();
+        instance.add_colored_rect(0.0, 0.0, 0.75, 0.5, [0.0, 0.5, 0.5]);
+        instance.update_buffers();
+    };
+
+    frug_instance.run(event_loop, update_function);
+}
+</code></pre></pre>
+<p>In the next section we'll start drawing images using textures!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="drawing-a-texture"><a class="header" href="#drawing-a-texture">Drawing a texture</a></h1>
+<p>Drawing rectangles is all fine and we could technically make games with just that (like Pong! as we'll see in the examples) but most games use images to represent our characters. To keep things simple in this guide we'll just draw an image on the screen, but we'll see how to make more interesting things with this in the (simple) platformer example.</p>
+<p>As we won't need all the previous stuff we did let's first clean up our file so we are with a clean window with a dark background (if you want you can use another color though, you now know how!).</p>
+<p>We should have something like this:</p>
+<pre><pre class="playground"><code class="language-rust">extern crate frug;
+
+fn main() {
+    let (mut frug_instance, event_loop) = frug::new(&quot;My Window&quot;);
+
+    let update_function = move |instance: &amp;mut frug::FrugInstance, _input: &amp;frug::InputHelper| {
+        instance.clear();
+
+        instance.update_buffers();
+    };
+
+    frug_instance.run(event_loop, update_function);
+}</code></pre></pre>
+<p>Now, to draw things on the screen we first need to load those resources. FRUG receives the bytes of such images so they can be embedded in our game and we don't need to ship our game with a bunch of folders containing such images (yet you can do that if you want!). To do this we'll use rust's <code>include_bytes</code> function before defining our update function. I'll use an image of a frog I have but feel free to use any image you like.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let img_bytes = include_bytes!(&quot;frog.png&quot;);
+<span class="boring">}</span></code></pre></pre>
+<p>Then we need to tell our FRUG instance to load those bytes.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let frog_text_idx = frug_instance.load_texture(img_bytes);
+<span class="boring">}</span></code></pre></pre>
+<blockquote>
+<p>FRUG helps us out a bit by returning the index of such texture so we can use it later. For the moment it might not make much sense but it will in a bit.</p>
+</blockquote>
+<p>Now all we need to do is inside our update function after the <code>instance.clear()</code> tell our instance to draw a rectangle using the texture we just loaded. We use the following line:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>instance.add_tex_rect(-0.25, 0.0, 0.5, 0.5, frog_text_idx);
+<span class="boring">}</span></code></pre></pre>
+<p>You might notice that such function looks very similar to the one we used to draw colored rectangles, the only difference is that instead of passing a color we pass the index of our texture, which we stored before while loading our texture.</p>
+<p>If you run the project you should be able to see your image on the screen!</p>
+<p><img src="guide/../img/guide_texture_rect.png" alt="A window with a frog" /></p>
+<p>Your whole <code>main.rs</code> should look like this:</p>
+<pre><pre class="playground"><code class="language-rust">use frug;
+
+fn main() {
+    let (mut frug_instance, event_loop) = frug::new(&quot;My Window&quot;);
+
+    let img_bytes = include_bytes!(&quot;frog.png&quot;);
+    let frog_text_idx = frug_instance.load_texture(img_bytes);
+
+    let update_function = move |instance: &amp;mut frug::FrugInstance, _input: &amp;frug::InputHelper| {
+        instance.clear();
+
+        instance.add_tex_rect(-0.25, 0.0, 0.5, 0.5, frog_text_idx);
+
+        instance.update_buffers();
+    };
+
+    frug_instance.run(event_loop, update_function);
+}</code></pre></pre>
+<p>Now let's see how we can work with the camera and user input, shall we?</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="camera-and-user-input"><a class="header" href="#camera-and-user-input">Camera and user input</a></h1>
+<p>If you are familiar with how WGPU works you might know this, but in case you don't, we have been working with 3D! I've tried to simplify some functions to work with 2D but when it comes to the camera I thought it was better to leave some control for developers so they can work with 3D if they want. If you want to go in depth with how the camera works I suggest going through those chapters in <a href="https://sotrh.github.io/learn-wgpu/beginner/tutorial6-uniforms/">Learn WGPU</a>. However, in here I'll just leave it at telling you that our FRUG instance has a property called <code>camera</code> which is a struct. Such struct contains some properties but the ones you can use to get started are the <code>eye</code> (a 3D point that defines where the camera is located) and the <code>target</code> (another 3D point which defines where our camera is looking at).</p>
+<p>In this section we'll take a look at how we can move our camera using the arrow keys, for this we'll use the second property that appears in the definition of our update function called <code>input</code>. </p>
+<blockquote>
+<p><code>input</code> is actually <a href="https://docs.rs/winit_input_helper/latest/winit_input_helper/struct.WinitInputHelper.html">WGPU's Input Helper</a>. Check it out if you wish learn more about such functions.</p>
+</blockquote>
+<p>For this let's start by checking if our right key is being held inside our update function and before all the rendering-related lines.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let update_function = move |instance: &amp;mut frug::FrugInstance, input: &amp;frug::InputHelper| {
+    // Checking our input
+    if input.key_held(frug::VirtualKeyCode::Right) { // 1.
+        // 2. We'll write something to move our camera in here
+    }
+
+    // Rendering
+    instance.clear();
+    instance.add_tex_rect(-0.25, 0.0, 0.5, 0.5, frog_text_idx);
+    instance.update_buffers();
+};
+<span class="boring">}</span></code></pre></pre>
+<ol>
+<li>
+<p>You surely noticed that we wrote something saying <code>VirtualKeyCode</code>. FRUG has some components that help use work with the <code>input</code> struct, in this case we use that enum to check for the right key. Later on we'll do the same for the left key.</p>
+</li>
+<li>
+<p>In there we'll write the code to move our camera </p>
+</li>
+</ol>
+<p>Now, like I mentioned before, our camera struct has the <code>eye</code> and <code>target</code> properties, which we'll use to move our camera. Since we want to keep this as 2D as possible we will move both the <code>eye</code> and <code>target</code> properties of the camera in the same part and at the same rate. In this case we'll want to move things horizontally, so we'll use the <code>x</code> property of both of them with the following lines:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>instance.camera.eye.x -= 0.01;
+instance.camera.target.x -= 0.01;
+<span class="boring">}</span></code></pre></pre>
+<p>If you run your project you'll notice that when you press the right key our image nicely moves to the right side of the screen. This means that the camera is moving, not the frog itself, yet it creates the illusion that the frog is moving.</p>
+<p>Now lets do the same thing for the left, shall we?</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>else if input.key_held(frug::VirtualKeyCode::Left) {
+    instance.camera.eye.x += 0.01;
+    instance.camera.target.x += 0.01;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>If you run this you'll notice that we now can move things to either side (horizontally), yet you'll probably notice that if you press both of them it moves towards the right side of the screen. This is because we did things in a poor manner. You could implement your own version of this to avoid this, or if you want you can check it out in the platformer example, where things will be a bit better, yet we'll leave it like that for the sake of simplicity in this example.</p>
+<p>As always, here's the whole version of the code you should have up until now (don't forget that you should use your own image for the texture!).</p>
+<pre><pre class="playground"><code class="language-rust">use frug;
+
+fn main() {
+    let (mut frug_instance, event_loop) = frug::new(&quot;My Window&quot;);
+
+    let img_bytes = include_bytes!(&quot;frog.png&quot;);
+    let frog_text_idx = frug_instance.load_texture(img_bytes);
+
+    let update_function = move |instance: &amp;mut frug::FrugInstance, input: &amp;frug::InputHelper| {
+        // Checking our input
+        if input.key_held(frug::VirtualKeyCode::Right) {
+            instance.camera.eye.x -= 0.01;
+            instance.camera.target.x -= 0.01;
+        } else if input.key_held(frug::VirtualKeyCode::Left) {
+            instance.camera.eye.x += 0.01;
+            instance.camera.target.x += 0.01;
+        }
+
+        // Rendering
+        instance.clear();
+        instance.add_tex_rect(-0.25, 0.0, 0.5, 0.5, frog_text_idx);
+        instance.update_buffers();
+    };
+
+    frug_instance.run(event_loop, update_function);
+}</code></pre></pre>
+<p>Now let's check out how to draw custom shapes, shall we?</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="creating-a-custom-shape"><a class="header" href="#creating-a-custom-shape">Creating a custom shape</a></h1>
+<p>Some times we want to use use other shapes different than rectangles. In this case FRUG gives us some flexibility and allows us to work at a bit lower level but still with simplicity. As you might already know, drawing things on the screen is mainly done via traingles, and our library is no exception.</p>
+<p>Now, do you remember in the rectangle section that we mentioned that FRUG works by storing a list (actually a <code>vec</code>) of all the shapes we want to draw? Well, the FRUG instance has a function called <code>add_colored_vertices</code> which receives a set of vertices and indices to create a shape and add it to the staging buffer. For this we'll need to use another struct FRUG provides called <code>Vertex</code> which is composed of the position of the vertex, the color, and a texture index.</p>
+<blockquote>
+<p>For the moment we'll ignore the texture index property of our vertex struct, but keep in mind that in the future we'll be able to do something similar to this but with images!</p>
+</blockquote>
+<p>Let's start by cleaning up our <code>main.rs</code> so we have the bare minimum to create our window.</p>
+<pre><pre class="playground"><code class="language-rust">use frug;
+
+fn main() {
+    let (mut frug_instance, event_loop) = frug::new(&quot;My Window&quot;);
+
+    let update_function = move |instance: &amp;mut frug::FrugInstance, _input: &amp;frug::InputHelper| {
+        // Rendering
+        instance.clear();
+        instance.update_buffers();
+    };
+
+    frug_instance.run(event_loop, update_function);
+}</code></pre></pre>
+<p>Now that we have a clean slate we can start to define things one by one. Let's start with the color of our vertices, shall we? We want to create something a bit colorful, so let's create 3 colors before our update function (I'll keep it simple and make one pure red, another green, and another blue. But feel free to do it with your own colors!).</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let red = [1.0, 0.0, 0.0];
+let green = [0.0, 1.0, 0.0];
+let blue = [0.0, 0.0, 1.0];
+<span class="boring">}</span></code></pre></pre>
+<p>Now that we have our colors, lets define our vertices. For this we'll only give the position and the color, the rest we'll leave at default.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let vertices = [
+    frug::Vertex {
+        // Vertex 0
+        position: [0.0, 0.5, 0.0],
+        color: red,
+        ..Default::default()
+    },
+    frug::Vertex {
+        // Vertex 1
+        position: [-0.5, -0.5, 0.0],
+        color: green,
+        ..Default::default()
+    },
+    frug::Vertex {
+        // Vertex 2
+        position: [0.5, -0.5, 0.0],
+        color: blue,
+        ..Default::default()
+    },
+];
+<span class="boring">}</span></code></pre></pre>
+<p>Then we need to define which indices we want to use. In this case we're drawing a triangle and we only need 3 indices, but you could be using a figure with more vertices (in such cases you should know that the indices represent which vertices form which triangles, this should be specified in counter clockwise order). </p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let indices = [0, 1, 2];
+<span class="boring">}</span></code></pre></pre>
+<p>Lastly, all we need is to tell rust to draw our triangle using those vertices and indices. Let's add that line after our <code>instance.clear()</code>.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>instance.add_colored_vertices(&amp;vertices, &amp;indices);
+<span class="boring">}</span></code></pre></pre>
+<p>If you run your project you should see our multi-colored triangle.</p>
+<p><img src="guide/../img/guide_custom_shape.png" alt="A window with a multi-color triangle" /></p>
+<p>The <code>main.rs</code> file should look like this:</p>
+<pre><pre class="playground"><code class="language-rust">use frug;
+
+fn main() {
+    let (frug_instance, event_loop) = frug::new(&quot;My Window&quot;);
+
+    let red = [1.0, 0.0, 0.0];
+    let green = [0.0, 1.0, 0.0];
+    let blue = [0.0, 0.0, 1.0];
+
+    let vertices = [
+        frug::Vertex {
+            // Vertex 0
+            position: [0.0, 0.5, 0.0],
+            color: red,
+            ..Default::default()
+        },
+        frug::Vertex {
+            // Vertex 1
+            position: [-0.5, -0.5, 0.0],
+            color: green,
+            ..Default::default()
+        },
+        frug::Vertex {
+            // Vertex 2
+            position: [0.5, -0.5, 0.0],
+            color: blue,
+            ..Default::default()
+        },
+    ];
+
+    let indices = [0, 1, 2];
+
+    let update_function = move |instance: &amp;mut frug::FrugInstance, _input: &amp;frug::InputHelper| {
+        // Rendering
+        instance.clear();
+        instance.add_colored_vertices(&amp;vertices, &amp;indices);
+        instance.update_buffers();
+    };
+
+    frug_instance.run(event_loop, update_function);
+}</code></pre></pre>
+<p>As for version 0.1.0 (the first public version) these will be all the guides. However, I'll leave some examples to show how one could make a simple pong game and a platformer. Feel free to check those out or make your own!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="setting-fullscreen-and-window-size"><a class="header" href="#setting-fullscreen-and-window-size">Setting fullscreen and window size</a></h1>
+<p>Some times we don't want to have our games in a small window, maybe we want to have our game using the entirety of our screen. For this the FRUG instance has a function called <code>set_fullscreen</code> which receives a bool to indicate whether we want to set our window to fullscreen or not.</p>
+<p>Therefore it would look like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// This sets our window to fullscreen
+frug_instance.set_fullscreen(true);
+
+// This makes us exit the fullscreen mode.
+frug_instance.set_fullscreen(false);
+<span class="boring">}</span></code></pre></pre>
+<p>Now, what if we don't want to use the whole screen but we want our window to have a specific size? For this our instance has a method called <code>set_window_size</code> which we can use to set both the width and height of our window, all we need to do is pass as paramters both numbers and consider it done!</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>frug_instance.set_window_size(550.0, 500.0);
+<span class="boring">}</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="examples"><a class="header" href="#examples">Examples</a></h1>
+<p>Now that we've cover the basics of how FRUG works, we can start checking out some examples to see how things can work together when making a game. We'll start by going through the &quot;hello world&quot; of games: Pong! and then we'll go through the basics of a platformer, meaning that we'll make just a character that can jump around, and collide with some objects.</p>
+<p>Without further ado, let's a-go!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="pong"><a class="header" href="#pong">Pong</a></h1>
+<p>Pong is sometimes considered as the &quot;Hello World&quot; of games. A simple game which can let's us explore how things work. With FRUG this won't be the exception and we'll develop a simple version of Pong to explore how to use FRUG beyond simple feature examples. </p>
+<p>The first thing we'll need is our <code>main.rs</code> with our frug instance initialization, our empty update function, and the <code>run</code> call. You should have something like this:</p>
+<pre><pre class="playground"><code class="language-rust">use frug;
+use cgmath::Vector2;
+
+fn main() {
+    let (frug_instance, event_loop) = frug::new(&quot;Pong!&quot;);
+
+    let update_function = move |instance: &amp;mut frug::FrugInstance, input: &amp;frug::InputHelper| {
+        // Rendering
+        instance.clear();
+        instance.update_buffers();
+    };
+
+    frug_instance.run(event_loop, update_function);
+}</code></pre></pre>
+<p>Oh, and don't forget to add FRUG to your <code>Cargo.toml</code>! (we'll also need another crate called <code>cgmath</code> so you might add it as well).</p>
+<pre><code class="language-toml"># ...
+
+[dependencies]
+cgmath = &quot;0.18&quot;
+frug = &quot;*&quot;
+</code></pre>
+<p>Now, let's quickly go over what things we'll need, shall we?</p>
+<ul>
+<li>Our &quot;player&quot; (just a rectangle to represent the player's paddle/racket).</li>
+<li>The oponent (almost the same as the player).</li>
+<li>The ball</li>
+</ul>
+<p>We could technically need more things, but for the sake of simplicity we'll only use those three things. Now, again for simplicity we'll just use rectangles for all 3 objects, yet the ball will obviously be smaller (a small square). This &quot;ball&quot; will start at the center of the screen and move to a random side of the screen to start the game. The &quot;opponent&quot; will just move to try to align the vertical center of the paddle with the center of the ball. And finally, we'll just let the player control their paddle through the keyboard's arrows.</p>
+<p>Let's start by creating the ball and the opponent, as it allows us to start developing the simple aspects of our game right away.</p>
+<p>We can start by creating a struct called &quot;CollisionRectangle&quot; which will help us to manage our 3 objects:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct CollisionRectangle {
+    pos: Vector2&lt;f32&gt;,
+    width: f32,
+    height: f32,
+    vel: Vector2&lt;f32&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<blockquote>
+<p>You might notice that we're using <code>Vector2&lt;i32&gt;</code> for our position and velocity. This might look familiar if you've used Unity or other engines, but in case you don't know them just keep in mind that they will simply hold 2 components (x and y) for us to represent those attributes.</p>
+</blockquote>
+<p>And we could also use a method to initialize new instances of our struct:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl CollisionRectangle {
+    fn new(x: f32, y: f32, width: f32, height: f32) -&gt; CollisionRectangle {
+        CollisionRectangle {
+            pos: Vector2 { x, y },
+            width,
+            height,
+            vel: Vector2 { x: 0.0, y: 0.0 },
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Now that we have our struct, we can define our ball! (do this inside your main function but before your update function)</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// ...
+
+// our objects
+let mut ball: CollisionRectangle = CollisionRectangle::new(-0.05, -0.05, 0.1, 0.1);
+<span class="boring">}</span></code></pre></pre>
+<p>Now all we need to do is render our ball! For this we will simply draw a rectangle using our FRUG instance, just like we did in the tutorial (this goes in our update function after the <code>clear()</code> function call).</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>instance.add_colored_rect(
+    ball.pos.x,
+    ball.pos.y,
+    ball.width,
+    ball.height,
+    [1.0, 1.0, 1.0],
+);
+<span class="boring">}</span></code></pre></pre>
+<p>If you run this now you'll notice that it will just show our screen and a weird rectangle. This happens because the coordinates of the &quot;world&quot; are from -1 to 1 on every direction, so if your window is not a square it is logical that the ball won't look like a square. We can easy-fix this by just making our window have the same height as it's width.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// This goes before our update function.
+frug_instance.set_window_size(800.0, 800.0);
+<span class="boring">}</span></code></pre></pre>
+<blockquote>
+<p>You might be thinking that this will be a severe issue when we want to work with a window that is not square-sized. Yes, you're right. This is always an issue and every engine and framework allows multiple types to solve this. In such cases it's better just to understand how the framework/engine/library works and use the solution that works best for you.</p>
+</blockquote>
+<p>Now that we have a &quot;ball&quot; in our game, we need some way to make it start moving. For this we will just check if the player pressed the return key and if the ball isn't moving. If that's the case we will set the speed of the ball and a random direction (left or right).</p>
+<p>We'll do this inside our update function:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let paddle_speed = 0.006;
+
+// start moving the ball if it's not moving
+if input.key_pressed(frug::VirtualKeyCode::Return) {
+    if ball.vel.x == 0.0 {
+        let dir = if rng.gen_bool(0.5) { -1.0 } else { 1.0 };
+        ball.vel.x = 0.01 * dir;
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>And now we need to actually move the ball each frame. As this is something that we'll need to do for every object in our game lets add it in the implementation of our <code>Collision Rectangle</code>.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn update_pos(&amp;mut self) {
+    self.pos += self.vel;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>And we'll call that method inside our update function:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// updates
+ball.update_pos();
+<span class="boring">}</span></code></pre></pre>
+<p>If you run this and hit the return key you'll notice that the ball starts moving!</p>
+<p>Now we'll need something our ball can actually bounce with, so why don't we start working with the player's paddle?</p>
+<p>For this, just as we did with the ball, we'll need to create another instance of our <code>CollisionRectangle</code>. You can add this next to the init of our ball.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut player = CollisionRectangle::new(-0.9, 0.2, 0.1, 0.5);
+<span class="boring">}</span></code></pre></pre>
+<p>And draw a rectangle each frame in the same way we did with our ball.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>instance.add_colored_rect(
+    player.pos.x,
+    player.pos.y,
+    player.width,
+    player.height,
+    [1.0, 1.0, 1.0],
+);
+<span class="boring">}</span></code></pre></pre>
+<p>And we can add a call to it's <code>update_pos</code>.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// updates
+ball.update_pos();
+player.update_pos(); // &lt;- NEW!
+<span class="boring">}</span></code></pre></pre>
+<p>Now, the movement for our &quot;player&quot; will be based on input, so let's just add a variable called <code>paddle_speed</code>, which we will use both with our player and the opponent. We'll keep things simple and add that to the player's vertical velocity if they upwards key is being pressed, and substract it with the downwards key (oh, and set the player's Y velocity to 0 each frame). This way if the player is pressing both keys at the same time the paddle will stop.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let paddle_speed = 0.006;
+
+// move player
+player.vel.y = 0.0;
+if input.key_held(frug::VirtualKeyCode::Up) {
+    player.vel.y += paddle_speed;
+}
+if input.key_held(frug::VirtualKeyCode::Down) {
+    player.vel.y -= paddle_speed;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>If you try this out you should see that the paddle can move when you press the keys! However, you'll also notice that the ball can absolutely ignore our paddle and go through it and into the infinity. Let's fix that. </p>
+<p>We can start with the simple things and reset the ball if it goes outside the screen. For this we will need a function to check if the ball has gone outside the screen. This is not a good practice but for the sake of simplicity let's just add it in our <code>CollisionRectangle</code> implementation (or feel free to do it in a better way!).</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn is_game_over(&amp;mut self) -&gt; bool {
+    if self.pos.x - self.width * 2.0 &gt;= 1.0 || self.pos.x + self.width * 2.0 &lt; -1.0 {
+        return true;
+    }
+    return false;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>And we'll check for this at some point in our update function.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// check if it's game over
+if ball.is_game_over() {
+    // restart ball
+    ball.pos.x = -0.05;
+    ball.pos.y = -0.05;
+    ball.vel.x = 0.0;
+    ball.vel.y = 0.0;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>With that done we need to make the ball bounce with our paddle and with the vertical limits of the screen. This time we'll go through the more elaborate part of it, colliding with the paddle. I won't go into much detail with this function, just know that we'll do it in the implementation of the <code>CollisionRectangle</code> and we'll do it in some way to receive another object as parameter and bounce against it in the x axis and set a new vertical direction randomly.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// This function will only work for the ball!
+fn check_collision(&amp;mut self, obj: &amp;CollisionRectangle) {
+    let mut rng = rand::thread_rng();
+
+    let tolerance_w = 0.15 * self.width; // percentage of shape
+    let tolerance_h = 0.15 * self.height; // percentage of shape
+
+    // Horizontal collision
+    if self.pos.y - tolerance_h &gt; obj.pos.y - obj.height {
+        if self.pos.y - tolerance_h &lt; obj.pos.y {
+            // give priority for horizontal collision
+            if self.pos.x &lt; obj.pos.x + obj.width {
+                if self.pos.x &gt; obj.pos.x {
+                    // Left collision is happening
+                    self.vel.x *= -1.0;
+                    self.vel.y = rng.gen_range(-0.01..0.01);
+                    return;
+                }
+            }
+
+            if self.pos.x + self.width &gt; obj.pos.x {
+                if self.pos.x + self.width &lt; obj.pos.x + obj.width {
+                    // Right collision is happening
+                    self.vel.x *= -1.0;
+                    self.vel.y = rng.gen_range(-0.01..0.01);
+                    return;
+                }
+            }
+        }
+    }
+
+    // Vertical collision
+    if self.pos.x + tolerance_w &lt; obj.pos.x - obj.width {
+        if self.pos.x + tolerance_w &gt; obj.pos.x {
+            // give priority for vertical collision
+            if self.pos.y &gt; obj.pos.y - obj.height {
+                if self.pos.y &lt; obj.pos.y {
+                    // Up collision is happening
+                    self.vel.y *= -1.0;
+                    return;
+                }
+            }
+
+            if self.pos.y - self.height &lt; obj.pos.y {
+                if self.pos.y - self.height &gt; obj.pos.y - obj.height {
+                    // Down collision is happening
+                    self.vel.y *= -1.0;
+                    return;
+                }
+            }
+        }
+    }
+
+    // No collision was detected
+}
+<span class="boring">}</span></code></pre></pre>
+<p>And for the ball to bounce with the floor and ceiling we'll do something similar to what we did to reset the ball.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn check_collision_screen(&amp;mut self) {
+    if self.pos.y &gt;= 1.0 {
+        if self.vel.y &gt; 0.0 {
+            self.vel.y *= -1.0;
+        }
+    } else if self.pos.y - self.height &lt; -1.0 {
+        if self.vel.y &lt; 0.0 {
+            self.vel.y *= -1.0;
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Now we need to add those calls inside our update function.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// bounce ball in case of collision
+ball.check_collision(&amp;player);
+ball.check_collision_screen();
+<span class="boring">}</span></code></pre></pre>
+<p>And with that done we should have a ball that neatly bounces with our player's paddle!</p>
+<blockquote>
+<p>You might notice that there's a very rare situation where the ball gets trapped between the floor/ceiling and the paddle. For the sake of simplicity of this example I'm not fixing that issue but feel free to try your own solution!</p>
+</blockquote>
+<p>Now all we have left to do is to create our opponent. Fortunately, it is really easy now that we've done the hard parts. We can start by adding a new instance of the <code>CollisionRectangle</code> for our opponent.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut opponent = CollisionRectangle::new(0.8, 0.2, 0.1, 0.5);
+<span class="boring">}</span></code></pre></pre>
+<p>Add it's checks for collisions with our ball.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>ball.check_collision(&amp;opponent);
+<span class="boring">}</span></code></pre></pre>
+<p>Then the call to <code>update_pos</code>.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>opponent.update_pos();
+<span class="boring">}</span></code></pre></pre>
+<p>And our drawing of the opponent's rectangle.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>instance.add_colored_rect(
+    opponent.pos.x,
+    opponent.pos.y,
+    opponent.width,
+    opponent.height,
+    [1.0, 1.0, 1.0],
+);
+<span class="boring">}</span></code></pre></pre>
+<p>Finally, we need some sort of AI to move our paddle. In this case we'll keep things simple and just try to align the center of the opponent with the center of the ball.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// move opponent
+let opponent_y = opponent.pos.y - (opponent.height / 2.0);
+let ball_y = ball.pos.y - (ball.height / 2.0);
+if opponent_y &gt; ball_y {
+    opponent.vel.y = -paddle_speed;
+} else if opponent_y &lt; ball_y {
+    opponent.vel.y = paddle_speed;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>And... done! If you've gone through these steps you should be able to play pong!</p>
+<p><img src="examples/../img/pong.png" alt="Our pong game." /></p>
+<p>Now that we've gone through a simple game, why don't we try something that involves sprites and a bit more color?</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="simple-platformer"><a class="header" href="#simple-platformer">Simple platformer</a></h1>
+<p>While there are some games out there that use only simple shapes, most games use images and textures to represent a more elaborate character than a triangle. So in this example we'll go through how FRUG can help us make games that have images and animations. What we'll do will look a bit like the following:</p>
+<p><img src="examples/../img/platformer.gif" alt="Our simple platformer" /></p>
+<p>As you can see, there are no enemies or complex mechanics, but the basics are all there: we have animations of our frog, a background, and collisions. Some things might not be as polished as one might like but the idea is there and I thought it would be better to keep things as simple as possible.</p>
+<p>We'll start with our basic FRUG setup we've used in previous examples in our <code>main.rs</code>:</p>
+<pre><pre class="playground"><code class="language-rust">use frug;
+
+fn main() {
+    let (frug_instance, event_loop) = frug::new(&quot;My Simple Platformer&quot;);
+
+    let update_function = move |instance: &amp;mut frug::FrugInstance, _input: &amp;frug::InputHelper| {
+       
+    };
+
+    frug_instance.run(event_loop, update_function);
+}</code></pre></pre>
+<p>Let's work our way up from the simple things to the complex ones, shall we? In such a case we'll start with drawing the background. For this we'll first need to load our texture, just as we did in previous examples:</p>
+<blockquote>
+<p>You can find all the assets for this project in the example folder of the FRUG repo in <a href="https://github.com/santyarellano/frug/tree/master/examples">this link</a>.</p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// background
+let img_bytes = include_bytes!(&quot;platformer_imgs/Purple.png&quot;);
+let background_tex_idx = frug_instance.load_texture(img_bytes);
+<span class="boring">}</span></code></pre></pre>
+<p>I'm using the purple tiles you saw in the .gif above. However, the image is only 1/6th of what you saw. To achieve the background you saw we need to repeat the image a couple of times, for this we'll have the following function.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// This function helps us draw the same texture for our background on repeat.
+fn draw_repeat_background(instance: &amp;mut frug::FrugInstance, tex_idx: usize, rows: u16, cols: u16) {
+    let tile_w: f32 = 2.0 / cols as f32;
+    let tile_h: f32 = 2.0 / rows as f32;
+    for i in 0..rows {
+        for j in 0..cols {
+            instance.add_tex_rect(
+                tile_w * j as f32 - 1.0,
+                tile_h * -(i as f32) + 1.0,
+                tile_w,
+                tile_h,
+                tex_idx,
+                false,
+                false,
+            );
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>As you can see, our function receives a <code>FrugInstance</code> which we'll use to draw the texture rectangles for our mosaic background, we'll also receive the texture index of the image to draw, and how many columns and rows we want tod draw. With that all we need to do is calculate the length and height of each tile and draw them in their respective positions.</p>
+<blockquote>
+<p>Remember that FRUG uses a -1 to 1 coordinate system, which means the size of each size of the screen is 2. Yet these are world coordinates, and that means that if you use a non-squared screen you'll need to do some math to get proper proportions for your assets.</p>
+</blockquote>
+<p>In this example we'll set our window to a squared size to avoid doing weird math to avoid weird stretched images.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>frug_instance.set_window_size(800.0, 800.0);
+<span class="boring">}</span></code></pre></pre>
+<p>Now all we have to do is call our function in our render section of our main:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// REMEMBER: THIS GOES AFTER THE instance.clear()
+
+// background
+draw_repeat_background(instance, background_tex_idx, 6, 6);
+<span class="boring">}</span></code></pre></pre>
+<p>Now we should have our background being rendered nicely!</p>
+<p>Next up, let's try drawing our floor tiles. For this we'll start by defining where this tiles will be in our &quot;world&quot;. In future iterations we might need to change where things are to test different things, and to achieve this we'll create a matrix to &quot;define&quot; where things spawn in our world.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let world_matrix = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+];
+<span class="boring">}</span></code></pre></pre>
+<p>As you can see, we have a 10x10 matrix of 0s and 1s. In here 0s mean nothing, but the 1s will represent these floor tiles.</p>
+<p>Now we'll need to define our struct to represent our game objects.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Clone)]
+struct Entity {
+    _name: Option&lt;String&gt;,
+    tex_idx: Option&lt;usize&gt;,
+    sprite: Option&lt;Sprite&gt;,
+    pos: Option&lt;Vector2&lt;f32&gt;&gt;,
+    vel: Option&lt;Vector2&lt;f32&gt;&gt;,
+    size: Option&lt;Vector2&lt;f32&gt;&gt;,
+    collisions: bool,
+    gravity: bool,
+    controlling: bool,
+    flip_img_x: bool,
+    flip_img_y: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<blockquote>
+<p>You'll notice that there are a lot of attributes in that struct that we don't really need for the floor tiles. However, you'll see later on that they will come in handy, yet some of this can be a bit obvious what they do. </p>
+</blockquote>
+<p>If you're using some code editor that checks how things are going you'll find out that there is a data type that doesn't exist, something called <code>Sprite</code>. We'll also need to define this struct, which will be used with our player to handle our animations.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Clone)]
+struct Sprite {
+    tex_idxs: Vec&lt;usize&gt;,
+    anim_speed: u8,
+    frame_timer: u8,
+    current_idx: usize,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Now, we'll need to to create some methods for our <code>Entity</code>, the first of these is the default implementation. This is just to ease our future a bit when we create new instances of our entity object.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl Default for Entity {
+    fn default() -&gt; Self {
+        Entity {
+            _name: None,
+            tex_idx: None,
+            sprite: None,
+            pos: None,
+            vel: None,
+            size: None,
+            collisions: false,
+            gravity: false,
+            controlling: false,
+            flip_img_x: false,
+            flip_img_y: false,
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>And we'll also need the render method of our entities.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl Entity {
+    fn render(&amp;self, frug_instance: &amp;mut FrugInstance) {
+        match self.tex_idx {
+            Some(idx) =&gt; frug_instance.add_tex_rect(
+                self.pos.unwrap().x,
+                self.pos.unwrap().y,
+                self.size.unwrap().x,
+                self.size.unwrap().y,
+                idx,
+                self.flip_img_x,
+                self.flip_img_y,
+            ),
+            None =&gt; {}
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>With this, we won't have to worry about how we draw every type of game object. We just have to create entities and give them the proper texture index.</p>
+<p>Yet for this to work properly we need to create a <code>Vec</code> of entities to hold all our entities and make it easy to call all methods for all our entities (this goes before our update function in our main).</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut entities: Vec&lt;Entity&gt; = Vec::new();
+<span class="boring">}</span></code></pre></pre>
+<p>Before we can create those instances we should load the texture for our floor tiles (just after we loaded the background texture).</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// floor tiles
+let img_bytes = include_bytes!(&quot;platformer_imgs/land.png&quot;);
+let land_tex_idx = frug_instance.load_texture(img_bytes);
+<span class="boring">}</span></code></pre></pre>
+<p>And now we actually need to create those entities. We'll go through our <code>world_matrix</code> and create a floor tile when we encounter a 1.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// load entities according to world matrix
+for i in 0..world_matrix.len() {
+    for j in 0..world_matrix[0].len() {
+        match world_matrix[i][j] {
+            1 =&gt; {
+                // floor tiles
+                let land_size = 2.0 / world_matrix.len() as f32;
+                let land_pos_x = j as f32 * land_size - 1.0;
+                let land_pos_y = i as f32 * -land_size + 1.0;
+                let new_land = Entity {
+                    tex_idx: Some(land_tex_idx),
+                    pos: Some(Vector2 {
+                        x: land_pos_x,
+                        y: land_pos_y,
+                    }),
+                    size: Some(Vector2 {
+                        x: land_size,
+                        y: land_size,
+                    }),
+                    collisions: true,
+                    ..Default::default()
+                };
+
+                entities.push(new_land);
+            }
+            _ =&gt; {}
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>As you can see that bit of code is somewhat longer than other blocks of code, but I hope it is easy enought to understand. All we do is if we find a 1 in the world matrix we calculate where our floor tiles should be and create an entity instance with such values and the proper texture index.</p>
+<p>No we just have to call our <code>render</code> method in our rendering section of our main function (after we draw our background).</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// entities
+for entity in &amp;entities {
+    entity.render(instance);
+}
+<span class="boring">}</span></code></pre></pre>
+<p>If you run this, you should be able to see your tiles neatly rendering in that world! And the better part of this is that you can modify the world matrix and you'll have to change nothing more for the changes to appear in your game!</p>
+<p>Now, the last part, and the longest one is our player. This will involve some changes but hopefully it will be easy enough with what we've done so far.</p>
+<p>We can start with loading the textures for our player, in this case, a frog (but feel free to use whatever you want). For this we'll store them in a <code>vec!</code> instead. This is because we'll have multiple images for our animation of our frog.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// frog
+let frog_tex_idxs = vec![
+    frug_instance.load_texture(include_bytes!(&quot;platformer_imgs/frog/0.png&quot;)),
+    frug_instance.load_texture(include_bytes!(&quot;platformer_imgs/frog/1.png&quot;)),
+    frug_instance.load_texture(include_bytes!(&quot;platformer_imgs/frog/2.png&quot;)),
+    frug_instance.load_texture(include_bytes!(&quot;platformer_imgs/frog/3.png&quot;)),
+    frug_instance.load_texture(include_bytes!(&quot;platformer_imgs/frog/Fall.png&quot;)),
+    frug_instance.load_texture(include_bytes!(&quot;platformer_imgs/frog/Jump.png&quot;)),
+];
+<span class="boring">}</span></code></pre></pre>
+<blockquote>
+<p>As you can see we have 4 images (which will be for our walking animation), 1 for our jump, and 1 for when the player is falling.</p>
+</blockquote>
+<p>For the sake of keeping this tutorial short I'll go a bit quicker with the next steps. For these next sections I'll just make a summary of what is happening, but I'll try to make the code as understandable as possible.</p>
+<p>Before starting with that we'll create some constants (this will go at the beggining of our file just after our imports).</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// ======= CONSTANTS &amp; ENUMS ======
+const GRAVITY: f32 = 0.001;
+const PLAYER_SPEED: f32 = 0.01;
+const PLAYER_JUMP: f32 = 0.02;
+
+enum Collision {
+    Top,
+    Bottom,
+    Left,
+    Right,
+    None,
+}
+// ======= CONSTANTS &amp; ENUMS ======
+<span class="boring">}</span></code></pre></pre>
+<p>We'll need to add some methods to our <code>Entity</code>:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl Entity {
+    fn process_input(&amp;mut self, input: &amp;frug::InputHelper) {
+        if self.controlling {
+            match self.vel.as_mut() {
+                Some(vel) =&gt; {
+                    vel.x = 0.0;
+                    if input.key_held(frug::VirtualKeyCode::Left) {
+                        vel.x -= PLAYER_SPEED;
+                    }
+
+                    if input.key_held(frug::VirtualKeyCode::Right) {
+                        vel.x += PLAYER_SPEED;
+                    }
+
+                    if input.key_pressed(frug::VirtualKeyCode::Space) {
+                        if vel.y == 0.0 {
+                            vel.y += PLAYER_JUMP;
+                        }
+                    }
+                }
+                None =&gt; {}
+            }
+        }
+    }
+
+    fn update(&amp;mut self, all_entities: &amp;[Entity], current_idx: usize) {
+        // gravity
+        if self.gravity {
+            self.vel.as_mut().unwrap().y -= GRAVITY;
+        }
+
+        // collisions
+        if self.collisions {
+            for i in 0..all_entities.len() {
+                if i != current_idx {
+                    // only collide if other object has collisions as well
+                    if all_entities[i].collisions {
+                        match self.check_collision(&amp;all_entities[i]) {
+                            Collision::Top =&gt; match self.vel.as_mut() {
+                                Some(v) =&gt; {
+                                    if v.y &gt; 0.0 {
+                                        v.y = 0.0;
+                                    }
+                                }
+                                None =&gt; {}
+                            },
+                            Collision::Bottom =&gt; match self.vel.as_mut() {
+                                Some(v) =&gt; {
+                                    //println!(&quot;{}&quot;, v.y);
+                                    if v.y &lt; 0.0 {
+                                        v.y = 0.0;
+                                    }
+                                }
+                                None =&gt; {}
+                            },
+                            Collision::Left =&gt; match self.vel.as_mut() {
+                                Some(v) =&gt; {
+                                    if v.x &lt; 0.0 {
+                                        v.x = 0.0;
+                                    }
+                                }
+                                None =&gt; {}
+                            },
+                            Collision::Right =&gt; match self.vel.as_mut() {
+                                Some(v) =&gt; {
+                                    if v.x &gt; 0.0 {
+                                        v.x = 0.0;
+                                    }
+                                }
+                                None =&gt; {}
+                            },
+                            Collision::None =&gt; {}
+                        }
+                    }
+                }
+            }
+        }
+
+        // movement
+        match self.vel {
+            Some(v) =&gt; {
+                let pos = self.pos.unwrap();
+                self.pos = Some(pos + v);
+            }
+            None =&gt; {}
+        }
+
+        // animate
+        self.animate();
+    }
+
+    fn render(&amp;self, frug_instance: &amp;mut FrugInstance) {
+        match self.tex_idx {
+            Some(idx) =&gt; frug_instance.add_tex_rect(
+                self.pos.unwrap().x,
+                self.pos.unwrap().y,
+                self.size.unwrap().x,
+                self.size.unwrap().y,
+                idx,
+                self.flip_img_x,
+                self.flip_img_y,
+            ),
+            None =&gt; {}
+        }
+    }
+
+    // choose the correct texture index accordingly
+    fn animate(&amp;mut self) {
+        // animate only if object has sprites
+        match self.sprite.as_mut() {
+            Some(sprite) =&gt; {
+                match &amp;self._name {
+                    // Define how the animations work for each name
+                    Some(name) =&gt; match name.as_str() {
+                        &quot;Player&quot; =&gt; {
+                            match &amp;self.vel {
+                                Some(vel) =&gt; {
+                                    // flip img if necessary
+                                    if vel.x &gt; 0.0 {
+                                        self.flip_img_x = false;
+                                    } else if vel.x &lt; 0.0 {
+                                        self.flip_img_x = true;
+                                    }
+
+                                    // jump/fall (has priority)
+                                    if vel.y &gt; 0.0 {
+                                        sprite.current_idx = 5;
+                                    } else if vel.y &lt; 0.0 {
+                                        sprite.current_idx = 4;
+                                    }
+                                    // walk
+                                    else if vel.x != 0.0 {
+                                        // update timer
+                                        if sprite.frame_timer == 0 {
+                                            // timer ended
+                                            sprite.frame_timer = sprite.anim_speed;
+                                            sprite.current_idx += 1;
+                                            if sprite.current_idx &gt; 3 {
+                                                // animation must go back to beggining
+                                                sprite.current_idx = 0;
+                                            }
+                                        }
+                                        sprite.frame_timer -= 1;
+                                    }
+                                    // idle
+                                    else {
+                                        sprite.frame_timer = 0;
+                                        sprite.current_idx = 0;
+                                    }
+                                }
+                                None =&gt; {}
+                            }
+
+                            // update texture index
+                            self.tex_idx = Some(sprite.tex_idxs[sprite.current_idx]);
+                        }
+                        _ =&gt; {}
+                    },
+                    None =&gt; {}
+                }
+            }
+            None =&gt; {}
+        }
+    }
+
+    // checks collision with another entity
+    fn check_collision(&amp;self, other: &amp;Entity) -&gt; Collision {
+        let collision_room = self.size.unwrap() / (2.0 * 3.0) / 2.0;
+
+        // self collision borders
+        let s_horizontal = (
+            self.get_center().x - collision_room.x, // left
+            self.get_center().x + collision_room.x, // right
+        );
+        let s_vertical = (
+            self.get_center().y + collision_room.y, // top
+            self.get_center().y - collision_room.y, // bottom
+        );
+
+        // other collision borders
+        let o_horizontal = (
+            other.pos.unwrap().x,                         // left
+            other.pos.unwrap().x + other.size.unwrap().x, // right
+        );
+        let o_vertical = (
+            other.pos.unwrap().y,                         // top
+            other.pos.unwrap().y - other.size.unwrap().y, // bottom
+        );
+
+        // check for vertical collisions
+        if (s_horizontal.0 &gt; o_horizontal.0 &amp;&amp; s_horizontal.0 &lt; o_horizontal.1)
+            || (s_horizontal.1 &gt; o_horizontal.0 &amp;&amp; s_horizontal.1 &lt; o_horizontal.1)
+        {
+            // self is within the horizontal range of other
+
+            // check for top collision
+            if self.pos.unwrap().y &gt;= o_vertical.1 &amp;&amp; self.pos.unwrap().y &lt;= o_vertical.0 {
+                return Collision::Top;
+            }
+            // check for bottom collision
+            else if self.pos.unwrap().y - self.size.unwrap().y &lt;= o_vertical.0
+                &amp;&amp; self.pos.unwrap().y - self.size.unwrap().y &gt;= o_vertical.1
+            {
+                return Collision::Bottom;
+            }
+        }
+
+        // check for horizontal collisions
+        if (s_vertical.0 &lt; o_vertical.0 &amp;&amp; s_vertical.0 &gt; o_vertical.1)
+            || (s_vertical.1 &lt; o_vertical.0 &amp;&amp; s_vertical.1 &gt; o_vertical.1)
+        {
+            // self is within the vertical range of other
+
+            // check for left collision
+            if self.pos.unwrap().x &lt; o_horizontal.1 &amp;&amp; self.pos.unwrap().x &gt; o_horizontal.0 {
+                return Collision::Left;
+            }
+
+            // check for right collision
+            if self.pos.unwrap().x + self.size.unwrap().x &gt; o_horizontal.0
+                &amp;&amp; self.pos.unwrap().x + self.size.unwrap().x &lt; o_horizontal.1
+            {
+                return Collision::Right;
+            }
+        }
+
+        return Collision::None;
+    }
+
+    fn get_center(&amp;self) -&gt; Vector2&lt;f32&gt; {
+        return Vector2 {
+            x: self.pos.unwrap().x + self.size.unwrap().x / 2.0,
+            y: self.pos.unwrap().y - self.size.unwrap().y / 2.0,
+        };
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<ul>
+<li>
+<p>the <code>process_input</code> receives the frug::InputHelper and acts if the entity has enabled the <code>controlling</code> field and add to the player's velocity (x) the player speed constant we just defined when the left/right arrows are being held, and when the space bar is being pressed we add to the player's velocity (y) the jump constant we created (only if the such velocity was 0, which will help us avoid an infinite jump bug).</p>
+</li>
+<li>
+<p>the <code>update</code> handles adding gravity to the velocity if such attribute is enabled for the entity, then handle collisions (this part is way too long to explain but it is a generic collision detection algorithm which allows to detect the direction where objects are colliding. This part also receives the <code>all_entities</code> parameter to compare against all entities). If collisions are happening, we modify the velocity of the entity to simulate real collisions. This part could be improved but for the sake of simplicity let's leave it at the least needed for it to work. We then update the entity's position based on the velocity. Finally we call the animate function.</p>
+</li>
+<li>
+<p>the <code>animate</code> function handles the selection of the correct texture index based on the object's name (this helps to define if it's the player or another type of entity), and the entity's velocity. Again, this could be better but this was a simple solution that works.</p>
+</li>
+<li>
+<p>the <code>check_collision</code> checks whether the entity is colliding against another entity and if so, return the direction it is colliding from.</p>
+</li>
+<li>
+<p>the <code>get_center</code> is a helper function that returns a vector2 indicating the center position of an entity.</p>
+</li>
+</ul>
+<p>After this modifications to our entity struct, we actually need to spawn our player. We'll use the number 2 to indicate that in the world matrix.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let world_matrix = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+];
+<span class="boring">}</span></code></pre></pre>
+<p>And we'll need to add that case in our entities loading.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>2 =&gt; {
+    // player
+    let size = 2.0 / world_matrix.len() as f32;
+    let pos_x = j as f32 * size - 1.0;
+    let pos_y = i as f32 * -size + 1.0;
+    let new_player = Entity {
+        _name: Some(&quot;Player&quot;.to_string()),
+        tex_idx: None,
+        sprite: Some(Sprite {
+            tex_idxs: frog_tex_idxs.clone(),
+            anim_speed: 8,
+            frame_timer: 8,
+            current_idx: 0,
+        }),
+        pos: Some(Vector2 { x: pos_x, y: pos_y }),
+        size: Some(Vector2 { x: size, y: size }),
+        vel: Some(Vector2 { x: 0.0, y: 0.0 }),
+        collisions: true,
+        gravity: true,
+        controlling: true,
+        ..Default::default()
+    };
+
+    entities.push(new_player);
+}
+<span class="boring">}</span></code></pre></pre>
+<p>As you can see, in this instance we're using the other attributes defined in our <code>Entity</code> struct. Thank you for your patience!</p>
+<p>And lastly, we need to add some calls in our update function to actually process the input and call the update method of our entities.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// process input
+for entity in entities.iter_mut() {
+    entity.process_input(input)
+}
+
+// update
+for i in 0..entities.len() {
+    let mut current_entity = entities[i].clone();
+
+    current_entity.update(&amp;entities, i);
+    entities[i] = current_entity;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>And that's it! You should have your game ready to run!</p>
+<p>In case something didn't work properly, feel free to review the full code in the example (<a href="https://github.com/santyarellano/frug/blob/master/examples/platformer.rs">here's the link</a>).</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="contributing-to-the-project"><a class="header" href="#contributing-to-the-project">Contributing to the project</a></h1>
+<p>I hope you liked where things are going, and if you are in the spirit of helping to improve this proyect feedback would be truly appreciated. You can answer the following survey (<a href="https://forms.gle/m2h7v2wkjwFTpUrP7">this link</a>) where you can leave some comments and help me evaluate some aspects of the proyect so it can be improved.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>

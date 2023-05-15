@@ -1,0 +1,271 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Camera and user input - FRUG Documentation (for v0.1.0)</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../frug_guide.html"><strong aria-hidden="true">2.</strong> Using FRUG</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../guide/creating_a_window.html"><strong aria-hidden="true">2.1.</strong> Setup and creating a window</a></li><li class="chapter-item expanded "><a href="../guide/colored_rectangle.html"><strong aria-hidden="true">2.2.</strong> Drawing a rectangle</a></li><li class="chapter-item expanded "><a href="../guide/background_color.html"><strong aria-hidden="true">2.3.</strong> Background color</a></li><li class="chapter-item expanded "><a href="../guide/texture_rectangle.html"><strong aria-hidden="true">2.4.</strong> Drawing a texture</a></li><li class="chapter-item expanded "><a href="../guide/camera.html" class="active"><strong aria-hidden="true">2.5.</strong> Camera and user input</a></li><li class="chapter-item expanded "><a href="../guide/custom_shape.html"><strong aria-hidden="true">2.6.</strong> Creating a custom shape</a></li><li class="chapter-item expanded "><a href="../guide/fullscreen.html"><strong aria-hidden="true">2.7.</strong> Setting fullscreen and window size</a></li></ol></li><li class="chapter-item expanded "><a href="../examples.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../examples/pong.html"><strong aria-hidden="true">3.1.</strong> Pong</a></li><li class="chapter-item expanded "><a href="../examples/platformer.html"><strong aria-hidden="true">3.2.</strong> Simple platformer</a></li></ol></li><li class="chapter-item expanded "><a href="../contribute_to_frug.html"><strong aria-hidden="true">4.</strong> Contributing to the project</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">FRUG Documentation (for v0.1.0)</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="camera-and-user-input"><a class="header" href="#camera-and-user-input">Camera and user input</a></h1>
+<p>If you are familiar with how WGPU works you might know this, but in case you don't, we have been working with 3D! I've tried to simplify some functions to work with 2D but when it comes to the camera I thought it was better to leave some control for developers so they can work with 3D if they want. If you want to go in depth with how the camera works I suggest going through those chapters in <a href="https://sotrh.github.io/learn-wgpu/beginner/tutorial6-uniforms/">Learn WGPU</a>. However, in here I'll just leave it at telling you that our FRUG instance has a property called <code>camera</code> which is a struct. Such struct contains some properties but the ones you can use to get started are the <code>eye</code> (a 3D point that defines where the camera is located) and the <code>target</code> (another 3D point which defines where our camera is looking at).</p>
+<p>In this section we'll take a look at how we can move our camera using the arrow keys, for this we'll use the second property that appears in the definition of our update function called <code>input</code>. </p>
+<blockquote>
+<p><code>input</code> is actually <a href="https://docs.rs/winit_input_helper/latest/winit_input_helper/struct.WinitInputHelper.html">WGPU's Input Helper</a>. Check it out if you wish learn more about such functions.</p>
+</blockquote>
+<p>For this let's start by checking if our right key is being held inside our update function and before all the rendering-related lines.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let update_function = move |instance: &amp;mut frug::FrugInstance, input: &amp;frug::InputHelper| {
+    // Checking our input
+    if input.key_held(frug::VirtualKeyCode::Right) { // 1.
+        // 2. We'll write something to move our camera in here
+    }
+
+    // Rendering
+    instance.clear();
+    instance.add_tex_rect(-0.25, 0.0, 0.5, 0.5, frog_text_idx);
+    instance.update_buffers();
+};
+<span class="boring">}</span></code></pre></pre>
+<ol>
+<li>
+<p>You surely noticed that we wrote something saying <code>VirtualKeyCode</code>. FRUG has some components that help use work with the <code>input</code> struct, in this case we use that enum to check for the right key. Later on we'll do the same for the left key.</p>
+</li>
+<li>
+<p>In there we'll write the code to move our camera </p>
+</li>
+</ol>
+<p>Now, like I mentioned before, our camera struct has the <code>eye</code> and <code>target</code> properties, which we'll use to move our camera. Since we want to keep this as 2D as possible we will move both the <code>eye</code> and <code>target</code> properties of the camera in the same part and at the same rate. In this case we'll want to move things horizontally, so we'll use the <code>x</code> property of both of them with the following lines:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>instance.camera.eye.x -= 0.01;
+instance.camera.target.x -= 0.01;
+<span class="boring">}</span></code></pre></pre>
+<p>If you run your project you'll notice that when you press the right key our image nicely moves to the right side of the screen. This means that the camera is moving, not the frog itself, yet it creates the illusion that the frog is moving.</p>
+<p>Now lets do the same thing for the left, shall we?</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>else if input.key_held(frug::VirtualKeyCode::Left) {
+    instance.camera.eye.x += 0.01;
+    instance.camera.target.x += 0.01;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>If you run this you'll notice that we now can move things to either side (horizontally), yet you'll probably notice that if you press both of them it moves towards the right side of the screen. This is because we did things in a poor manner. You could implement your own version of this to avoid this, or if you want you can check it out in the platformer example, where things will be a bit better, yet we'll leave it like that for the sake of simplicity in this example.</p>
+<p>As always, here's the whole version of the code you should have up until now (don't forget that you should use your own image for the texture!).</p>
+<pre><pre class="playground"><code class="language-rust">use frug;
+
+fn main() {
+    let (mut frug_instance, event_loop) = frug::new(&quot;My Window&quot;);
+
+    let img_bytes = include_bytes!(&quot;frog.png&quot;);
+    let frog_text_idx = frug_instance.load_texture(img_bytes);
+
+    let update_function = move |instance: &amp;mut frug::FrugInstance, input: &amp;frug::InputHelper| {
+        // Checking our input
+        if input.key_held(frug::VirtualKeyCode::Right) {
+            instance.camera.eye.x -= 0.01;
+            instance.camera.target.x -= 0.01;
+        } else if input.key_held(frug::VirtualKeyCode::Left) {
+            instance.camera.eye.x += 0.01;
+            instance.camera.target.x += 0.01;
+        }
+
+        // Rendering
+        instance.clear();
+        instance.add_tex_rect(-0.25, 0.0, 0.5, 0.5, frog_text_idx);
+        instance.update_buffers();
+    };
+
+    frug_instance.run(event_loop, update_function);
+}</code></pre></pre>
+<p>Now let's check out how to draw custom shapes, shall we?</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../guide/texture_rectangle.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../guide/custom_shape.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../guide/texture_rectangle.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../guide/custom_shape.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
