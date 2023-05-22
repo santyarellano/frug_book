@@ -119,6 +119,9 @@
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+                        <a href="https://github.com/santyarellano/frug" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
 
                     </div>
                 </div>
@@ -159,11 +162,11 @@
 <li>Scaling textures</li>
 <li>Handle Mouse input</li>
 <li>Handle Keyboard input</li>
+<li>Alpha blending for textures</li>
 </ul>
 <p>And these are the features currently under development:</p>
 <ul>
 <li>Rotating textures</li>
-<li>Alpha blending for textures</li>
 <li>Choosing a specific backend (Direct X, Metal, Vulkan, etc.)</li>
 <li>Writing and using custom shaders</li>
 <li>Handle window state events</li>
@@ -1433,7 +1436,7 @@ for i in 0..entities.len() {
 <p>And that's it! You should have your game ready to run!</p>
 <p>In case something didn't work properly, feel free to review the full code in the example (<a href="https://github.com/santyarellano/frug/blob/master/examples/platformer.rs">here's the link</a>).</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="contributing-to-the-project"><a class="header" href="#contributing-to-the-project">Contributing to the project</a></h1>
-<p>I hope you liked where things are going, and if you are in the spirit of helping to improve this proyect feedback would be truly appreciated. You can answer the following survey (<a href="https://forms.gle/m2h7v2wkjwFTpUrP7">this link</a>) where you can leave some comments and help me evaluate some aspects of the proyect so it can be improved.</p>
+<p>I hope you liked where things are going, and if you are in the spirit of helping to improve this project feedback would be truly appreciated. You can answer the following survey (<a href="https://forms.gle/m2h7v2wkjwFTpUrP7">this link</a>) where you can leave some comments and help me evaluate some aspects of the project so it can be improved.</p>
 
                     </main>
 
@@ -1452,6 +1455,22 @@ for i in 0..entities.len() {
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 

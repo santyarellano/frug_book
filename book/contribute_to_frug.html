@@ -118,6 +118,9 @@
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+                        <a href="https://github.com/santyarellano/frug" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
 
                     </div>
                 </div>
@@ -145,7 +148,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="contributing-to-the-project"><a class="header" href="#contributing-to-the-project">Contributing to the project</a></h1>
-<p>I hope you liked where things are going, and if you are in the spirit of helping to improve this proyect feedback would be truly appreciated. You can answer the following survey (<a href="https://forms.gle/m2h7v2wkjwFTpUrP7">this link</a>) where you can leave some comments and help me evaluate some aspects of the proyect so it can be improved.</p>
+<p>I hope you liked where things are going, and if you are in the spirit of helping to improve this project feedback would be truly appreciated. You can answer the following survey (<a href="https://forms.gle/m2h7v2wkjwFTpUrP7">this link</a>) where you can leave some comments and help me evaluate some aspects of the project so it can be improved.</p>
 
                     </main>
 
@@ -170,6 +173,22 @@
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 
