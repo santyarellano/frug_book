@@ -14,7 +14,7 @@ FRUG attempts to simplify the process of starting out, and that includes importi
 # ...
 
 [dependencies]
-frug = "*" 
+frug = "0.1.0" 
 # We'll use the star to use the latest version. 
 # If you want, you can substitute the star with the version number you want to use.
 ```
